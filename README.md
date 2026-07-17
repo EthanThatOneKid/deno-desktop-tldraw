@@ -57,9 +57,14 @@ deno task build
 - `package.json` and `vite.config.ts` make this a Vite app, which Deno builds
   before packaging the desktop app.
 - `desktop.ts` serves the built Vite output and configures the native app menu.
-- `src/App.tsx` renders `<Tldraw persistenceKey="deno-desktop-tldraw" />`.
-- tldraw stores the drawing locally in IndexedDB, including assets supported by
-  its local persistence mode.
+- `src/App.tsx` renders `<Tldraw>` and exposes a small desktop bridge for native
+  menu commands.
+- `File -> Open...` loads `.tldr.json` / `.json` tldraw snapshots from disk.
+- `File -> Save` and `File -> Save As...` export the current drawing as a
+  `.tldr.json` snapshot. This uses browser download behavior, so it does not
+  overwrite the original file path in place.
+- `Edit` menu items call tldraw's built-in action API for undo, redo, cut, copy,
+  paste, and select all.
 - `deno.json` contains the Deno Desktop metadata and build output paths.
 - The native `Help -> About` menu opens this template's GitHub repository.
 - The template uses Deno Desktop's `cef` backend for consistent Chromium

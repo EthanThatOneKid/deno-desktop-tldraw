@@ -36,3 +36,7 @@ body {
   min-width: 0;
   min-height: 0;
 }
+
+.desktop-file-input {
+  display: none;
+}

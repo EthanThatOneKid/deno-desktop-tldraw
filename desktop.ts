@@ -15,6 +15,7 @@ type DesktopMenuItem =
 
 interface DesktopWindow {
   setApplicationMenu(menu: DesktopMenuItem[]): void;
+  executeJs(script: string): Promise<unknown>;
   addEventListener(
     type: "menuclick",
     listener: (event: CustomEvent<{ id?: string }>) => void,
@@ -42,20 +43,98 @@ win.setApplicationMenu([
   {
     submenu: {
       label: "File",
-      items: [{ role: { role: "quit" } }],
+      items: [
+        {
+          item: {
+            label: "New",
+            id: "file-new",
+            accelerator: "CmdOrCtrl+N",
+            enabled: true,
+          },
+        },
+        {
+          item: {
+            label: "Open...",
+            id: "file-open",
+            accelerator: "CmdOrCtrl+O",
+            enabled: true,
+          },
+        },
+        "separator",
+        {
+          item: {
+            label: "Save",
+            id: "file-save",
+            accelerator: "CmdOrCtrl+S",
+            enabled: true,
+          },
+        },
+        {
+          item: {
+            label: "Save As...",
+            id: "file-save-as",
+            accelerator: "CmdOrCtrl+Shift+S",
+            enabled: true,
+          },
+        },
+        "separator",
+        { role: { role: "quit" } },
+      ],
     },
   },
   {
     submenu: {
       label: "Edit",
       items: [
-        { role: { role: "undo" } },
-        { role: { role: "redo" } },
+        {
+          item: {
+            label: "Undo",
+            id: "edit-undo",
+            accelerator: "CmdOrCtrl+Z",
+            enabled: true,
+          },
+        },
+        {
+          item: {
+            label: "Redo",
+            id: "edit-redo",
+            accelerator: "CmdOrCtrl+Shift+Z",
+            enabled: true,
+          },
+        },
         "separator",
-        { role: { role: "cut" } },
-        { role: { role: "copy" } },
-        { role: { role: "paste" } },
-        { role: { role: "selectAll" } },
+        {
+          item: {
+            label: "Cut",
+            id: "edit-cut",
+            accelerator: "CmdOrCtrl+X",
+            enabled: true,
+          },
+        },
+        {
+          item: {
+            label: "Copy",
+            id: "edit-copy",
+            accelerator: "CmdOrCtrl+C",
+            enabled: true,
+          },
+        },
+        {
+          item: {
+            label: "Paste",
+            id: "edit-paste",
+            accelerator: "CmdOrCtrl+V",
+            enabled: true,
+          },
+        },
+        {
+          item: {
+            label: "Select All",
+            id: "edit-select-all",
+            accelerator: "CmdOrCtrl+A",
+            enabled: true,
+          },
+        },
       ],
     },
   },
@@ -76,10 +155,30 @@ win.setApplicationMenu([
 ]);
 
 win.addEventListener("menuclick", (event) => {
-  if (event.detail.id === "about") {
+  const id = event.detail.id;
+  if (id === "about") {
     openExternal(repoUrl).catch((error) => console.error(error));
+    return;
+  }
+
+  const script = menuScripts[id ?? ""];
+  if (script) {
+    win.executeJs(script).catch((error: unknown) => console.error(error));
   }
 });
+
+const menuScripts: Record<string, string> = {
+  "file-new": "window.tldrawDesktop?.newDocument()",
+  "file-open": "window.tldrawDesktop?.openDocument()",
+  "file-save": "window.tldrawDesktop?.saveDocument()",
+  "file-save-as": "window.tldrawDesktop?.saveDocumentAs()",
+  "edit-undo": "window.tldrawDesktop?.runAction('undo')",
+  "edit-redo": "window.tldrawDesktop?.runAction('redo')",
+  "edit-cut": "window.tldrawDesktop?.runAction('cut')",
+  "edit-copy": "window.tldrawDesktop?.runAction('copy')",
+  "edit-paste": "window.tldrawDesktop?.runAction('paste')",
+  "edit-select-all": "window.tldrawDesktop?.runAction('select-all')",
+};
 
 Deno.serve(async (req) => {
   const res = await serveDir(req, { fsRoot, quiet: true });
