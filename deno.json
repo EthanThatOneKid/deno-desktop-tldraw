@@ -1,0 +1,37 @@
+{
+  "name": "deno-desktop-tldraw",
+  "version": "0.1.0",
+  "exports": "./src/main.tsx",
+  "tasks": {
+    "dev": "deno run -A npm:vite --host 127.0.0.1",
+    "desktop:dev": "deno desktop --hmr .",
+    "build": "deno run -A npm:vite build",
+    "desktop:build": "deno desktop .",
+    "check": "deno check --node-modules-dir=auto vite.config.ts src/main.tsx",
+    "fmt": "deno fmt",
+    "lint": "deno lint"
+  },
+  "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "dom.asynciterable", "deno.ns", "esnext"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  },
+  "fmt": {
+    "exclude": ["dist", "dist-desktop", "node_modules"]
+  },
+  "lint": {
+    "exclude": ["dist", "dist-desktop", "node_modules"]
+  },
+  "desktop": {
+    "app": {
+      "name": "Deno Desktop tldraw",
+      "identifier": "com.example.deno-desktop-tldraw"
+    },
+    "backend": "webview",
+    "output": {
+      "macos": "./dist-desktop/DenoDesktopTldraw.app",
+      "windows": "./dist-desktop/DenoDesktopTldraw",
+      "linux": "./dist-desktop/deno-desktop-tldraw"
+    }
+  }
+}

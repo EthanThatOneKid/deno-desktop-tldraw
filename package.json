@@ -1,0 +1,15 @@
+{
+  "name": "deno-desktop-tldraw",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "vite": "latest",
+    "typescript": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "tldraw": "latest"
+  },
+  "devDependencies": {}
+}
