@@ -41,7 +41,8 @@ deno task desktop:build
 ```
 
 The desktop output is written to `dist-desktop/` according to the
-platform-specific paths in `deno.json`.
+platform-specific paths in `deno.json`. The desktop build task cleans generated
+output first so old desktop bundles are not embedded into the next build.
 
 ## Verify
 
@@ -59,6 +60,9 @@ deno task build
 - tldraw stores the drawing locally in IndexedDB, including assets supported by
   its local persistence mode.
 - `deno.json` contains the Deno Desktop metadata and build output paths.
+- The template uses Deno Desktop's `cef` backend for consistent Chromium
+  behavior. The default Windows WebView backend can crash on some WebView2
+  installations with this tldraw canvas.
 
 ## Customize
 

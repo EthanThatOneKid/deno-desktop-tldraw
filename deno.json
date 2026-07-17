@@ -6,7 +6,8 @@
     "dev": "deno run -A npm:vite --host 127.0.0.1",
     "desktop:dev": "deno desktop --hmr .",
     "build": "deno run -A npm:vite build",
-    "desktop:build": "deno desktop .",
+    "clean": "deno run -A scripts/clean.ts",
+    "desktop:build": "deno run -A scripts/build_desktop.ts",
     "check": "deno check --node-modules-dir=auto vite.config.ts src/main.tsx",
     "fmt": "deno fmt",
     "lint": "deno lint"
@@ -27,7 +28,7 @@
       "name": "Deno Desktop tldraw",
       "identifier": "com.example.deno-desktop-tldraw"
     },
-    "backend": "webview",
+    "backend": "cef",
     "output": {
       "macos": "./dist-desktop/DenoDesktopTldraw.app",
       "windows": "./dist-desktop/DenoDesktopTldraw",
