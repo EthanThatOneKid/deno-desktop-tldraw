@@ -18,7 +18,7 @@ deno task desktop:dev
 ```
 
 This starts Deno Desktop in HMR mode. Deno detects the Vite project, starts the
-Vite dev server, and opens the desktop webview.
+desktop entry, and opens the desktop webview.
 
 For a normal browser development server:
 
@@ -54,12 +54,14 @@ deno task build
 
 ## How It Works
 
-- `package.json` and `vite.config.ts` make this a Vite app, which
-  `deno desktop .` auto-detects.
+- `package.json` and `vite.config.ts` make this a Vite app, which Deno builds
+  before packaging the desktop app.
+- `desktop.ts` serves the built Vite output and configures the native app menu.
 - `src/App.tsx` renders `<Tldraw persistenceKey="deno-desktop-tldraw" />`.
 - tldraw stores the drawing locally in IndexedDB, including assets supported by
   its local persistence mode.
 - `deno.json` contains the Deno Desktop metadata and build output paths.
+- The native `Help -> About` menu opens this template's GitHub repository.
 - The template uses Deno Desktop's `cef` backend for consistent Chromium
   behavior. The default Windows WebView backend can crash on some WebView2
   installations with this tldraw canvas.

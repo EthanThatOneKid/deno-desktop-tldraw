@@ -2,13 +2,16 @@
   "name": "deno-desktop-tldraw",
   "version": "0.1.0",
   "exports": "./src/main.tsx",
+  "imports": {
+    "@std/http/file-server": "jsr:@std/http@^1/file-server"
+  },
   "tasks": {
     "dev": "deno run -A npm:vite --host 127.0.0.1",
-    "desktop:dev": "deno desktop --hmr .",
+    "desktop:dev": "deno task build && deno desktop --hmr --allow-run --include dist desktop.ts",
     "build": "deno run -A npm:vite build",
     "clean": "deno run -A scripts/clean.ts",
     "desktop:build": "deno run -A scripts/build_desktop.ts",
-    "check": "deno check --node-modules-dir=auto vite.config.ts src/main.tsx",
+    "check": "deno check --node-modules-dir=auto vite.config.ts desktop.ts scripts/build_desktop.ts scripts/clean.ts src/main.tsx",
     "fmt": "deno fmt",
     "lint": "deno lint"
   },
