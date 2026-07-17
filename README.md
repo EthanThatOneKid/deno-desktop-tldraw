@@ -3,9 +3,10 @@
 A minimal template for running the offline [tldraw SDK](https://tldraw.dev/) in
 a [`deno desktop`](https://docs.deno.com/runtime/desktop/) application.
 
-The app is a Vite React project that Deno Desktop can auto-detect. The canvas
-uses tldraw's `persistenceKey`, so drawings are saved locally in IndexedDB and
-survive app reloads without a server.
+![Deno Desktop tldraw screenshot](docs/assets/deno-desktop-tldraw-screenshot.png)
+
+The app is a Vite React project with a native Deno Desktop menu. Drawings can be
+opened and saved as local `.tldr.json` snapshot files without a server.
 
 ## Requirements
 
