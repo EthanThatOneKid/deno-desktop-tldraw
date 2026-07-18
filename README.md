@@ -58,13 +58,21 @@ deno task build
 - `package.json` and `vite.config.ts` make this a Vite app, which Deno builds
   before packaging the desktop app.
 - `desktop.ts` serves the built Vite output and configures the native app menu.
-- `src/App.tsx` renders `<Tldraw>` and exposes a small desktop bridge for native
-  menu commands.
-- `File -> Open...` loads `.tldr.json` / `.json` tldraw snapshots from disk.
-- `File -> Save` and `File -> Save As...` export the current drawing as a
-  `.tldr.json` snapshot. This uses browser download behavior, so it does not
-  overwrite the original file path in place.
-- `Edit` menu items call tldraw's built-in action API for undo, redo, cut, copy,
+- `src/App.tsx` renders `<Tldraw>` with an in-page file toolbar and keyboard
+  shortcuts. It exposes a desktop bridge for native menu commands (kept for
+  future backend versions).
+- Files use the
+  [File System Access API](https://developer.mozilla.org/en-US/docs/Web/API/File_System_API)
+  where available (CEF / Chromium). File handles are reused for in-place save.
+  When FS Access is absent, the template falls back to `<input type="file">` for
+  open and a download blob for save.
+- `File -> Open...`, `File -> Save`, and `File -> Save As...` in the native menu
+  bar call the same in-page actions via `executeJs`. **On Windows + CEF (Deno
+  2.9.3) native `menuclick` events do not fire** — this is
+  [a known upstream issue](https://github.com/denoland/deno/issues/36151). The
+  in-page toolbar and `Ctrl+O` / `Ctrl+S` / `Ctrl+Shift+S` keyboard shortcuts
+  are the blessed path until it is resolved.
+- Edit menu items call tldraw's built-in action API for undo, redo, cut, copy,
   paste, and select all.
 - `deno.json` contains the Deno Desktop metadata and build output paths.
 - The native `Help -> About` menu opens this template's GitHub repository.
