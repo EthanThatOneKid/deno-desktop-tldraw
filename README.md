@@ -45,6 +45,19 @@ The desktop output is written to `dist-desktop/` according to the
 platform-specific paths in `deno.json`. The desktop build task cleans generated
 output first so old desktop bundles are not embedded into the next build.
 
+## Download
+
+Pre-built desktop packages for Windows, macOS, and Linux are published on
+[GitHub Releases](https://github.com/EthanThatOneKid/deno-desktop-tldraw/releases/latest).
+
+Or
+[use this template](https://github.com/EthanThatOneKid/deno-desktop-tldraw/generate)
+to create your own copy, then build:
+
+```sh
+deno task desktop:build
+```
+
 ## Verify
 
 ```sh

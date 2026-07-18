@@ -11,31 +11,49 @@ jobs:
   windows:
     runs-on: windows-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Deno
-        uses: denoland/setup-deno@v2
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
         with:
           deno-version: v2.x
-
-      - name: Verify
-        run: |
-          deno task check
-          deno task lint
-
-      - name: Build desktop app
-        run: deno task desktop:build
-
-      - name: Package Windows app
+      - run: deno task check
+      - run: deno task lint
+      - run: deno task desktop:build
+      - name: Package
         shell: pwsh
-        run: |
-          Compress-Archive `
-            -Path dist-desktop\DenoDesktopTldraw\* `
-            -DestinationPath DenoDesktopTldraw-windows-x64.zip
-
-      - name: Upload release asset
-        uses: softprops/action-gh-release@v2
+        run: Compress-Archive -Path dist-desktop/DenoDesktopTldraw/* -DestinationPath DenoDesktopTldraw-windows-x64.zip
+      - uses: softprops/action-gh-release@v2
         with:
           files: DenoDesktopTldraw-windows-x64.zip
           generate_release_notes: true
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: deno task check
+      - run: deno task lint
+      - run: deno task desktop:build
+      - name: Package
+        run: cd dist-desktop && zip -r DenoDesktopTldraw-macos-arm64.zip "DenoDesktopTldraw.app"
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist-desktop/DenoDesktopTldraw-macos-arm64.zip
+
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+      - run: deno task check
+      - run: deno task lint
+      - run: deno task desktop:build
+      - name: Package
+        run: cd dist-desktop && tar -czf deno-desktop-tldraw-linux-x64.tar.gz deno-desktop-tldraw
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist-desktop/deno-desktop-tldraw-linux-x64.tar.gz
