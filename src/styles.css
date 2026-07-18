@@ -42,7 +42,7 @@ body {
 }
 
 .file-toolbar {
-  position: absolute;
+  position: fixed;
   bottom: 0.75rem;
   left: 0.75rem;
   display: flex;
@@ -54,7 +54,7 @@ body {
   border-radius: 999px;
   border: 1px solid #e2e8f0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  z-index: 100;
+  z-index: 1000;
 }
 
 .file-toolbar-label {

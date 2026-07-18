@@ -1,3 +1,4 @@
+import { createPortal } from "react-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Tldraw, useActions, useEditor } from "tldraw";
 import type { TLEditorSnapshot } from "tldraw";
@@ -203,43 +204,50 @@ function DesktopBridge() {
           setFileName(ensureSnapshotFileName(file.name));
         }}
       />
-      <div className="file-toolbar" role="toolbar" aria-label="File actions">
-        <span className="file-toolbar-label" title={fileName}>
-          {fileName}
-        </span>
-        <button
-          type="button"
-          onClick={newDocument}
-          title="New drawing"
-          aria-label="New drawing"
+      {createPortal(
+        <div
+          className="file-toolbar"
+          role="toolbar"
+          aria-label="File actions"
         >
-          New
-        </button>
-        <button
-          type="button"
-          onClick={openDocument}
-          title="Open drawing… (Ctrl+O)"
-          aria-label="Open drawing"
-        >
-          Open
-        </button>
-        <button
-          type="button"
-          onClick={saveDocument}
-          title="Save (Ctrl+S)"
-          aria-label="Save drawing"
-        >
-          Save
-        </button>
-        <button
-          type="button"
-          onClick={saveDocumentAs}
-          title="Save As… (Ctrl+Shift+S)"
-          aria-label="Save drawing as"
-        >
-          Save As
-        </button>
-      </div>
+          <span className="file-toolbar-label" title={fileName}>
+            {fileName}
+          </span>
+          <button
+            type="button"
+            onClick={newDocument}
+            title="New drawing"
+            aria-label="New drawing"
+          >
+            New
+          </button>
+          <button
+            type="button"
+            onClick={openDocument}
+            title="Open drawing… (Ctrl+O)"
+            aria-label="Open drawing"
+          >
+            Open
+          </button>
+          <button
+            type="button"
+            onClick={saveDocument}
+            title="Save (Ctrl+S)"
+            aria-label="Save drawing"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            onClick={saveDocumentAs}
+            title="Save As… (Ctrl+Shift+S)"
+            aria-label="Save drawing as"
+          >
+            Save As
+          </button>
+        </div>,
+        document.body,
+      )}
     </>
   );
 }
