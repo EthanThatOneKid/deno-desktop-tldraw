@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Developer documentation for the Deno Desktop tldraw template."
+    />
+    <title>Developer Docs | Deno Desktop tldraw</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html">Deno Desktop tldraw</a>
+      <nav aria-label="Primary navigation">
+        <a href="download.html">Download</a>
+        <a aria-current="page" href="docs.html">Developer Docs</a>
+        <a
+          href="https://github.com/EthanThatOneKid/deno-desktop-tldraw">GitHub</a>
+      </nav>
+    </header>
+
+    <main class="page docs-layout">
+      <aside class="toc" aria-label="Documentation sections">
+        <a href="#quick-start">Quick start</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#menus">Native menus</a>
+        <a href="#files">Local files</a>
+        <a href="#limitations">Limitations</a>
+      </aside>
+
+      <article class="docs-content">
+        <p class="eyebrow">Developer docs</p>
+        <h1>Build your own offline tldraw desktop app.</h1>
+
+        <section id="quick-start">
+          <h2>Quick start</h2>
+          <pre><code>deno task desktop:dev</code></pre>
+          <p>
+            Use Deno 2.9 or newer. For a browser-only Vite dev server, run
+            `deno task dev`.
+          </p>
+        </section>
+
+        <section id="architecture">
+          <h2>Architecture</h2>
+          <p>
+            `desktop.ts` is the Deno Desktop entry. It serves the built Vite
+            output from `dist/`, configures the native application menu, and
+            routes menu clicks into the webview with `executeJs`.
+          </p>
+          <p>
+            `src/App.tsx` renders `<Tldraw>` and installs a small
+            `globalThis.tldrawDesktop` bridge that exposes file and edit actions
+            to the native menu layer.
+          </p>
+        </section>
+
+        <section id="menus">
+          <h2>Native menus</h2>
+          <p>
+            Edit commands call tldraw's built-in UI action IDs: undo, redo, cut,
+            copy, paste, and select-all. This avoids relying on generic OS edit
+            roles that only target focused text fields.
+          </p>
+        </section>
+
+        <section id="files">
+          <h2>Local files</h2>
+          <p>
+            Open loads `.json` or `.tldr.json` snapshots. Save exports
+            `editor.getSnapshot()` as a `.tldr.json` file. This keeps the
+            template local-first without requiring a sync server.
+          </p>
+        </section>
+
+        <section id="limitations">
+          <h2>Limitations</h2>
+          <p>
+            Deno Desktop does not yet expose native file open/save dialogs. The
+            template uses browser file input and download behavior, so save
+            exports a new file rather than overwriting the original path.
+          </p>
+          <p>
+            The template uses the CEF backend because the default Windows WebView
+            backend crashed during package smoke testing on this tldraw canvas.
+          </p>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>
