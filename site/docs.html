@@ -27,7 +27,7 @@
         <a href="#architecture">Architecture</a>
         <a href="#menus">Native menus</a>
         <a href="#files">Local files</a>
-        <a href="#limitations">Limitations</a>
+        <a href="#compatibility">Compatibility</a>
       </aside>
 
       <article class="docs-content">
@@ -70,17 +70,20 @@
           <h2>Local files</h2>
           <p>
             Open loads `.json` or `.tldr.json` snapshots. Save exports
-            `editor.getSnapshot()` as a `.tldr.json` file. This keeps the
-            template local-first without requiring a sync server.
+            `editor.getSnapshot()` as a `.tldr.json` file. When the File System
+            Access API is available, Save writes back to the current file and
+            Save As opens a save picker. This keeps the template local-first
+            without requiring a sync server.
           </p>
         </section>
 
-        <section id="limitations">
-          <h2>Limitations</h2>
+        <section id="compatibility">
+          <h2>Compatibility</h2>
           <p>
-            Deno Desktop does not yet expose native file open/save dialogs. The
-            template uses browser file input and download behavior, so save
-            exports a new file rather than overwriting the original path.
+            Chromium-based webviews expose browser-native file open and save
+            pickers through the File System Access API. If that API is not
+            available or a picker call is blocked, the template falls back to
+            file input and download behavior.
           </p>
           <p>
             The template uses the CEF backend because the default Windows WebView

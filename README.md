@@ -61,9 +61,11 @@ deno task build
 - `src/App.tsx` renders `<Tldraw>` and exposes a small desktop bridge for native
   menu commands.
 - `File -> Open...` loads `.tldr.json` / `.json` tldraw snapshots from disk.
-- `File -> Save` and `File -> Save As...` export the current drawing as a
-  `.tldr.json` snapshot. This uses browser download behavior, so it does not
-  overwrite the original file path in place.
+- `File -> Save` writes back to the current file when the browser-native File
+  System Access API is available. Otherwise, it falls back to exporting a
+  `.tldr.json` snapshot download.
+- `File -> Save As...` opens a browser-native save picker when available, with
+  the same snapshot download fallback for unsupported environments.
 - `Edit` menu items call tldraw's built-in action API for undo, redo, cut, copy,
   paste, and select all.
 - `deno.json` contains the Deno Desktop metadata and build output paths.
