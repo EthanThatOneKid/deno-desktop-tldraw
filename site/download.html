@@ -33,6 +33,7 @@
         <h2>Latest release</h2>
         <div class="actions">
           <a
+            id="recommended-download"
             class="button primary"
             href="https://github.com/EthanThatOneKid/deno-desktop-tldraw/releases/latest"
           >View latest release</a>
@@ -41,7 +42,7 @@
             href="https://github.com/EthanThatOneKid/deno-desktop-tldraw/releases"
           >All releases</a>
         </div>
-        <p>
+        <p id="download-guidance">
           Windows builds are expected as zipped `dist-desktop/DenoDesktopTldraw`
           bundles. macOS and Linux builds can be added as release automation
           grows.
@@ -55,5 +56,49 @@ cd deno-desktop-tldraw
 deno task desktop:build</code></pre>
       </section>
     </main>
+    <script>
+    const platform = navigator.userAgentData?.platform ??
+      navigator.platform ?? "";
+    const userAgent = navigator.userAgent;
+    const releaseUrl =
+      "https://github.com/EthanThatOneKid/deno-desktop-tldraw/releases/latest";
+    const downloadButton = document.querySelector("#recommended-download");
+    const downloadGuidance = document.querySelector("#download-guidance");
+
+    const os = /Windows/i.test(platform) || /Windows/i.test(userAgent)
+      ? "windows"
+      : /macOS|Mac/i.test(platform) || /Macintosh/i.test(userAgent)
+      ? "mac"
+      : /Linux/i.test(platform) || /Linux/i.test(userAgent)
+      ? "linux"
+      : "unknown";
+
+    const copy = {
+      windows: {
+        label: "Download for Windows",
+        guidance:
+          "Windows builds are published as zipped `dist-desktop/DenoDesktopTldraw` bundles on GitHub Releases.",
+      },
+      mac: {
+        label: "View macOS options",
+        guidance:
+          "A packaged macOS build is not published yet. View releases for current assets, or build from source with Deno 2.9 or newer.",
+      },
+      linux: {
+        label: "View Linux options",
+        guidance:
+          "A packaged Linux build is not published yet. View releases for current assets, or build from source with Deno 2.9 or newer.",
+      },
+      unknown: {
+        label: "View latest release",
+        guidance:
+          "Choose the asset for your operating system on GitHub Releases, or build from source with Deno 2.9 or newer.",
+      },
+    }[os];
+
+    downloadButton.textContent = copy.label;
+    downloadButton.href = releaseUrl;
+    downloadGuidance.textContent = copy.guidance;
+    </script>
   </body>
 </html>
