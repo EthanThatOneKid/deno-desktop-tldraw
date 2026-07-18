@@ -69,18 +69,29 @@
         <section id="files">
           <h2>Local files</h2>
           <p>
-            Open loads `.json` or `.tldr.json` snapshots. Save exports
-            `editor.getSnapshot()` as a `.tldr.json` file. This keeps the
-            template local-first without requiring a sync server.
+            Files use the File System Access API where available (CEF /
+            Chromium). File handles are reused so <strong>Save</strong>
+            overwrites the original file in place. When FS Access is absent,
+            the template falls back to a hidden file input for open and a
+            download blob for save.
+          </p>
+          <p>
+            The bottom-left toolbar and <code>Ctrl+O</code> /
+            <code>Ctrl+S</code> / <code>Ctrl+Shift+S</code> keyboard shortcuts
+            are the primary file controls.
           </p>
         </section>
 
         <section id="limitations">
           <h2>Limitations</h2>
           <p>
-            Deno Desktop does not yet expose native file open/save dialogs. The
-            template uses browser file input and download behavior, so save
-            exports a new file rather than overwriting the original path.
+            On Windows + CEF (Deno 2.9.3), native <code>menuclick</code> events
+            do not fire — <a
+            href="https://github.com/denoland/deno/issues/36151">denoland/deno#36151</a>.
+            Until that upstream bug is fixed, use the in-page toolbar buttons
+            or keyboard shortcuts for file operations. The native menu items
+            are wired and will begin working automatically when the runtime
+            delivers the events.
           </p>
           <p>
             The template uses the CEF backend because the default Windows WebView
