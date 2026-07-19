@@ -37,5 +37,8 @@
       "windows": "./dist-desktop/DenoDesktopTldraw",
       "linux": "./dist-desktop/deno-desktop-tldraw"
     }
+  },
+  "compile": {
+    "exclude": ["node_modules"]
   }
 }
